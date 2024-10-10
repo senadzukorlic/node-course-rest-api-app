@@ -1,11 +1,12 @@
 const express = require("express")
-const bodyParser = require("body-parser")
-
+const cors = require("cors")
+const mysql = require("mysql2")
 const feedRoutes = require("./routes/feed")
-
+const sequelize = require("./util/database")
 const app = express()
 
-app.use(bodyParser.json())
+app.use(cors())
+app.use(express.json())
 
 app.use((req, res, next) => {
   //postavljanje dozvola o ukidanju cors-8,dozvola klijentu da da postavlja konteknt type i autorizaciju i da salje metode (post,put,patch i delete)
@@ -20,8 +21,13 @@ app.use((req, res, next) => {
 
 app.use("/feed", feedRoutes)
 
-app.listen(8080, () => {
-  console.log("Server is running on port 8080")
-})
-
-const cors = require("cors")
+sequelize
+  .sync()
+  .then((res) => {
+    app.listen(8080, () => {
+      console.log("Server is running on port 8080")
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
