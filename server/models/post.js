@@ -8,7 +8,7 @@ const Post = sequelize.define(
     title: { type: Sequelize.STRING, allowNull: false },
     imageUrl: { type: Sequelize.STRING, allowNull: false },
     content: { type: Sequelize.STRING, allowNull: false },
-    creator: { type: Object, allowNull: false },
+    creator: { type: Sequelize.JSON, allowNull: false },
   },
   { timestamps: true }
 )
