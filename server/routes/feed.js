@@ -13,5 +13,5 @@ router.post(
   ],
   feedCotroller.createPost
 )
-
+router.get("/post/:postId", feedCotroller.getPost)
 module.exports = router
