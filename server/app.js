@@ -3,9 +3,42 @@ const cors = require("cors")
 const path = require("path")
 const feedRoutes = require("./routes/feed")
 const sequelize = require("./util/database")
+
+const multer = require("multer")
+const { v4: uuidv4 } = require("uuid")
+
 const app = express()
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "images")
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuidv4() + path.extname(file.originalname))
+  },
+})
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true)
+  } else {
+    cb(null, false)
+  }
+}
+
 app.use(cors())
+app.use(multer({ storage: storage, fileFilter: fileFilter })).single("image")
+app.post("/upload", (req, res) => {
+  res.send("File uploaded successfully")
+})
+
+app.listen(8080, () => {
+  console.log("Test server is running on port 8080")
+})
 app.use(express.json())
 app.use("images", express.static(path.join(__dirname, "images")))
 
