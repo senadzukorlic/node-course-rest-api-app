@@ -31,16 +31,10 @@ const fileFilter = (req, file, cb) => {
 }
 
 app.use(cors())
-app.use(multer({ storage: storage, fileFilter: fileFilter })).single("image")
-app.post("/upload", (req, res) => {
-  res.send("File uploaded successfully")
-})
+app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"))
 
-app.listen(8080, () => {
-  console.log("Test server is running on port 8080")
-})
 app.use(express.json())
-app.use("images", express.static(path.join(__dirname, "images")))
+app.use("/images", express.static(path.join(__dirname, "images")))
 
 app.use((req, res, next) => {
   //postavljanje dozvola o ukidanju cors-8,dozvola klijentu da da postavlja konteknt type i autorizaciju i da salje metode (post,put,patch i delete)
