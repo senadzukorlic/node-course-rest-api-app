@@ -78,9 +78,10 @@ exports.getPost = (req, res, next) => {
 
 exports.updatePost = (req, res, next) => {
   const postId = req.params.postId
+  console.log("Update Post ID:", postId) // Dodaj ovaj log
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    const error = new Error("Validation failed,entered data is incorrect")
+    const error = new Error("Validation failed, entered data is incorrect")
     error.statusCode = 422
     throw error
   }
@@ -98,7 +99,7 @@ exports.updatePost = (req, res, next) => {
   Post.findByPk(postId)
     .then((post) => {
       if (!post) {
-        const error = new Error("Could not find post.") //ovo moram sebi razjasnit
+        const error = new Error("Could not find post.")
         error.statusCode = 404
         throw error
       }

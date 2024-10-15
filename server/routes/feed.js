@@ -18,5 +18,6 @@ router.get("/post/:postId", feedCotroller.getPost)
 router.put("/post/:postId", [
   body("title").trim().isLength({ min: 5 }),
   body("content").trim().isLength({ min: 5 }),
+  feedCotroller.updatePost,
 ])
 module.exports = router
