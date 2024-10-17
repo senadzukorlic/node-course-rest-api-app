@@ -133,7 +133,7 @@ exports.deletePost = (req,res,next)=>{
     }
     clearImage(post.imageUrl)
 
-    return Post.destroy(postId)
+    return Post.destroy({ where: { id: postId } })
   }).then(result =>{
     console.log(result)
     res.status(200).json({message:'Deleted post'})
