@@ -1,6 +1,26 @@
-const Sequelize = require("sequelize")
+// const Sequelize = require("sequelize");
+// const sequelize = require("../util/database");
+// const User = require("./user");
+//
+// const Post = sequelize.define(
+//   "post",
+//   {
+//     title: { type: Sequelize.STRING, allowNull: false },
+//     imageUrl: { type: Sequelize.STRING, allowNull: false },
+//     content: { type: Sequelize.STRING, allowNull: false },
+//     creator: { type: Sequelize.DataTypes.UUID, allowNull: false },
+//   },
+//   { timestamps: true },
+// );
+//
+// Post.belongsTo(User, { foreignKey: "creator", as: "user" });
+// User.hasMany(Post, { foreignKey: "creator" });
+//
+// module.exports = Post;
 
-const sequelize = require("../util/database")
+const Sequelize = require("sequelize");
+const sequelize = require("../util/database");
+const User = require("./user");
 
 const Post = sequelize.define(
   "post",
@@ -8,9 +28,12 @@ const Post = sequelize.define(
     title: { type: Sequelize.STRING, allowNull: false },
     imageUrl: { type: Sequelize.STRING, allowNull: false },
     content: { type: Sequelize.STRING, allowNull: false },
-    creator: { type: Sequelize.JSON, allowNull: false },
+    creator: { type: Sequelize.DataTypes.UUID, allowNull: false },
   },
-  { timestamps: true }
-)
+  { timestamps: true },
+);
 
-module.exports = Post
+Post.belongsTo(User, { foreignKey: "creator", as: "user" });
+User.hasMany(Post, { foreignKey: "creator", as: "userPosts" });
+
+module.exports = Post;
