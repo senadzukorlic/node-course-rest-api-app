@@ -168,7 +168,22 @@ exports.deletePost = (req, res, next) => {
       return Post.destroy({ where: { id: postId } });
     })
     .then((result) => {
-      console.log(result);
+      return User.findByPk(req.userId, {
+        include: [{ model: Post, as: "userPosts" }],
+      });
+    })
+    .then((user) => {
+      if (!user) {
+        const error = new Error("User not found.");
+        error.statusCode = 404;
+        throw error;
+      }
+      // Ažurirajte niz postova ako je potrebno
+      user.userPosts = user.userPosts.filter((post) => post.id !== postId);
+      return user.save();
+    })
+
+    .then((result) => {
       res.status(200).json({ message: "Deleted post" });
     })
     .catch((err) => {
